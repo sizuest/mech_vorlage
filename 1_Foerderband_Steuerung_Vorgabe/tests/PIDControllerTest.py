@@ -18,13 +18,37 @@ class PIDControllerTest(unittest.TestCase):
                          "integral error should be 0 at initialisation")
 
     def test_7steps(self):
-        self.assertEqual(self.pid.calculateTargetValue(0)[0], 207)
-        self.assertEqual(self.pid.calculateTargetValue(100)[0], 107)
-        self.assertEqual(self.pid.calculateTargetValue(200)[0], 57)
-        self.assertEqual(self.pid.calculateTargetValue(300)[0], 8)
-        self.assertEqual(self.pid.calculateTargetValue(400)[0], -41)
-        self.assertEqual(self.pid.calculateTargetValue(430)[0], -21)
-        self.assertEqual(self.pid.calculateTargetValue(415)[0], 8)
-        self.assertEqual(self.pid.calculateTargetValue(415)[0], 0)
+        self.pid.kp = 0.5
+        self.pid.ki = 0.05
+        self.pid.kd = 0.005
 
-        self.assertAlmostEqual(self.pid.errorIntegral, 10.6, 3)
+        # TODO: Füllen Sie hier bei den erwarteten Werten (2ter Parameter)
+        # die Resultate aus Ihrem Excel-Sheet ein
+        self.assertEqual(self.pid.calculateTargetValue(0)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(100)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(200)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(300)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(380)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(400)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(417)[0], 0)
+
+        # TODO: Füllen Sie auch hier beim erwarteten Werte (2ter Parameter)
+        # das Resultate für den 7ten Schritt aus Ihrem Excel-Sheet ein
+        self.assertAlmostEqual(self.pid.errorIntegral, 0, 3)
+
+    def test_antiwindup(self):
+        self.pid.kp = 0.5
+        self.pid.ki = 0.5
+        self.pid.kd = 0.005
+
+        self.pid.refposition = 70000
+        self.pid.reset()
+
+        # TODO: Füllen Sie hier bei den erwarteten Werten (2ter Parameter)
+        # die Resultate aus Ihrem Excel-Sheet ein
+        self.assertEqual(self.pid.calculateTargetValue(0)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(100)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(200)[0], 0)
+
+        self.assertAlmostEqual(self.pid.errorIntegral, 1023/self.pid.ki, 3)
+
