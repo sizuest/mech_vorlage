@@ -33,10 +33,10 @@ def timerPinIRQ():
 
     count += 1          # Increase count
     # TODO: Führen Sie folgende Schritte aus, wenn der Motor laufen soll, also wenn 'running' True ist
-    # 1. lesen Sie aus dem 'encoder'-Objekt die aktuelle Position aus
-    # 2. berechnen Sie mit Hilfe des 'pidcontroller' die neue Geschwindigkeit
-    # 3. setzen Sie auf dem Motor die errechnete Geschwindigkeit
-    # zusätzlich geben Sie Position, Geschwindigkeit und die PIDactions über den Logger aus
+    #  1. lesen Sie aus dem 'encoder'-Objekt die aktuelle Position aus
+    #  2. berechnen Sie mit Hilfe des 'pidcontroller' die neue Geschwindigkeit
+    #  3. setzen Sie auf dem Motor die errechnete Geschwindigkeit
+    #  zusätzlich geben Sie Position, Geschwindigkeit und die PIDactions über den Logger aus
 
 
 def startPressed():

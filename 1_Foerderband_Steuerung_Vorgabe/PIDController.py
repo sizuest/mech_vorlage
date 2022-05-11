@@ -26,21 +26,23 @@ class PIDController:
         """
         self.errorLinear = self.refposition
         self.errorIntegral = 0
+        # TODO: Wenn Sie weitere Instanz-Variablen in __init__() erzeugen (Werte mit self. ...=.... setzen), dann
+        #  stellen Sie sicher, dass diese auch in der reset()-Funktion wieder korrekt zurückgesetzt werden
 
     def calculateTargetValue(self, actualValue):
         """
         Calculate next target values with the help of a PID controller.
         """
         # TODO:
-        # 1. Berechnen Sie
-        #    - den aktuellen Positions-Fehler 'errorLinear'
-        #    - das aktuelle Fehler-Integral 'errorIntegral'; denken
-        #      Sie dabei an windup
-        #    - das aktuelle Fehler-Derivative 'errorDerivative'
-        # 2. Berechnen Sie aus den Fehlern die P, I und D-Anteile;
-        #    Sie können diese Werte in den Variablen p_part, i_part
-        #    und d_part abspeichern oder die Berechnungen direkt in die
-        #    Liste der PIDactions schreiben
+        #  1. Berechnen Sie
+        #     - den aktuellen Positions-Fehler 'errorLinear'
+        #     - das aktuelle Fehler-Integral 'errorIntegral'; denken
+        #       Sie dabei an windup
+        #     - das aktuelle Fehler-Derivative 'errorDerivative'
+        #  2. Berechnen Sie aus den Fehlern die P, I und D-Anteile;
+        #     Sie können diese Werte in den Variablen p_part, i_part
+        #     und d_part abspeichern oder die Berechnungen direkt in die
+        #     Liste der PIDactions schreiben
 
         # Save the three parts of the controller in a vector
         PIDactions = [p_part, i_part, d_part]
