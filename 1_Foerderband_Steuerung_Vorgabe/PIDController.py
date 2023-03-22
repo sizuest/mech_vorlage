@@ -44,6 +44,10 @@ class PIDController:
         #     und d_part abspeichern oder die Berechnungen direkt in die
         #     Liste der PIDactions schreiben
 
+        p_part = 0	# TODO
+        i_part = 0	# TODO
+        d_part = 0	# TODO
+
         # Save the three parts of the controller in a vector
         PIDactions = [p_part, i_part, d_part]
         # The output speed is the sum of the parts

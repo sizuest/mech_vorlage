@@ -54,9 +54,9 @@ class PIDControllerTest(unittest.TestCase):
 
         # TODO: Füllen Sie hier bei den erwarteten Werten (2ter Parameter)
         # die Resultate aus Ihrem Excel-Sheet ein
-        self.assertEqual(self.pid.calculateTargetValue(0)[0], 0)
-        self.assertEqual(self.pid.calculateTargetValue(100)[0], 0)
-        self.assertEqual(self.pid.calculateTargetValue(200)[0], 0)
+        self.assertEqual(self.pid.calculateTargetValue(0)[0], ...)
+        self.assertEqual(self.pid.calculateTargetValue(100)[0], ...)
+        self.assertEqual(self.pid.calculateTargetValue(200)[0], ...)
 
         # TODO: Je nach Ihrer Berechnung im Excel-Sheet müssen Sie auch in der folgenden Zeile den zweiten Parameter
         #  noch Ihrem Excel-Sheet gemäss anpassen
