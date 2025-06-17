@@ -9,23 +9,23 @@ from Logger import Logger
 
 
 # Global variables
-running = False          # Controller state
-waitingtime = 1          # Waiting time in seconds for output
+running = False           # Controller state
+waiting_time = 1          # Waiting time in seconds for output
 
 pidcontroller = PIDController()
-logger = Logger(pidcontroller.kp, pidcontroller.Tn, pidcontroller.Tv, pidcontroller.refposition)
+logger = Logger(pidcontroller.kp, pidcontroller.Tn, pidcontroller.Tv, pidcontroller.reference_position)
 encoder = Encoder(23, 24)
 motor = Motor('GPIO16', 'GPIO17', 'GPIO18')
 
 
-def timerPinIRQ():
+def timer_pin_irq():
     """
     100 Hz timer for the regulator
     Method is activated with timer IRQ and should contain all actions
     necessary:
     1. Get current position
-    2. Get speed from PID controller
-    3. Send speed to Motor
+    2. Get voltage from PID controller
+    3. Send voltage to Motor
     4. Save significant data for visualization.
     """
     # TODO: Führen Sie folgende Schritte aus, wenn der Motor laufen soll, also
@@ -37,7 +37,7 @@ def timerPinIRQ():
     #  den Logger aus
 
 
-def startPressed():
+def start_pressed():
     """
     Start button pressed
     Clean data in Instances
@@ -49,13 +49,13 @@ def startPressed():
     print("Starting")
     logger.clean()
     pidcontroller.reset()
-    encoder.resetPosition()
+    encoder.reset_position()
     # TODO: Starten Sie den Motor
 
     running = True
 
 
-def stopPressed():
+def stop_pressed():
     """
     Stop button pressed
     when running was True:
@@ -85,9 +85,9 @@ if __name__ == '__main__':
     stopButton = Button('GPIO06')
 
     # Register ISR on input signals
-    timerPin.when_activated = timerPinIRQ
-    startButton.when_activated = startPressed
-    stopButton.when_activated = stopPressed
+    timerPin.when_activated = timer_pin_irq
+    startButton.when_activated = start_pressed
+    stopButton.when_activated = stop_pressed
 
     try:
         # Dieser Teil des Programms ist nur für die Ausgabe der aktuellen
@@ -101,12 +101,12 @@ if __name__ == '__main__':
             wait until exactly one second has passed
             """
             now = time()
-            pos = encoder.getPosition()
-            v = motor.getSpeed()
+            pos = encoder.get_position()
+            v = motor.get_voltage()
             print("Position:", pos, "Speed: ", v)
             elapsed = time() - now
-            sleep(waitingtime - elapsed)
+            sleep(waiting_time - elapsed)
 
     except KeyboardInterrupt:
-        stopPressed()
+        stop_pressed()
         timerPin.close()

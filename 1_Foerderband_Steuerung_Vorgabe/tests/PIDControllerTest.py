@@ -12,9 +12,9 @@ class PIDControllerTest(unittest.TestCase):
         del self.pid
 
     def test_init(self):
-        self.assertEqual(self.pid.errorLinear, self.pid.refposition,
+        self.assertEqual(self.pid.error_linear, self.pid.reference_position,
                          "linear error and reference position should be equal at initialisation")
-        self.assertEqual(self.pid.errorIntegral, 0,
+        self.assertEqual(self.pid.error_integral, 0,
                          "integral error should be 0 at initialisation")
 
     def test_7steps(self):
@@ -30,17 +30,17 @@ class PIDControllerTest(unittest.TestCase):
 
         # TODO: Füllen Sie hier bei den erwarteten Werten (2ter Parameter)
         #  die Resultate aus Ihrem Excel-Sheet ein
-        self.assertEqual(self.pid.calculateTargetValue(0)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(100)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(200)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(300)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(380)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(400)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(417)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(0)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(100)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(200)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(300)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(380)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(400)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(417)[0], ...)
 
         # TODO: Füllen Sie auch hier beim erwarteten Werte (2ter Parameter)
         #  das Resultate für den 7ten Schritt aus Ihrem Excel-Sheet ein
-        self.assertAlmostEqual(self.pid.errorIntegral, ..., 3)
+        self.assertAlmostEqual(self.pid.error_integral, ..., 3)
 
     def test_antiwindup(self):
         # Um möglichst schnell in den Windup-Fall zu laufen, verwenden wir
@@ -53,16 +53,16 @@ class PIDControllerTest(unittest.TestCase):
         self.pid.Tn = 0.05
         self.pid.Tv = 0.01
 
-        self.pid.refposition = 70000
+        self.pid.reference_position = 70000
         self.pid.reset()
 
         # TODO: Füllen Sie hier bei den erwarteten Werten (2ter Parameter)
         # die Resultate aus Ihrem Excel-Sheet ein
-        self.assertEqual(self.pid.calculateTargetValue(0)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(100)[0], ...)
-        self.assertEqual(self.pid.calculateTargetValue(200)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(0)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(100)[0], ...)
+        self.assertEqual(self.pid.calculate_controller_output(200)[0], ...)
 
         # TODO: Je nach Ihrer Berechnung im Excel-Sheet müssen Sie auch in der
         # folgenden Zeile den zweiten Parameter noch Ihrem Excel-Sheet gemäss
         # anpassen
-        self.assertAlmostEqual(self.pid.errorIntegral, 1023 / self.pid.ki, 3)
+        self.assertAlmostEqual(self.pid.error_integral, 1023 / self.pid.ki, 3)

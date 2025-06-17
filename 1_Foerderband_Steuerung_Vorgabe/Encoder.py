@@ -13,30 +13,30 @@ class Encoder:
     bits = 0
     lastToggle = -1
 
-    def __init__(self, inpA, inpB):
+    def __init__(self, input_a, input_b):
         """
         Initialize encoder
-        :param inpA: Input pin for encoder signal A
-        :param inpB: Input pin for encoder signal B
+        :param input_a: Input pin for encoder signal A
+        :param input_b: Input pin for encoder signal B
         """
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)  # Use BCM GPIO numbers
 
-        self.inpA = inpA
-        self.inpB = inpB
+        self.input_a = input_a
+        self.input_b = input_b
 
-        GPIO.setup(self.inpA, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.inpB, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.input_a, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.input_b, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-        GPIO.add_event_detect(self.inpA, GPIO.BOTH, callback=self.__input_callback)  # add edge detection on channel
-        GPIO.add_event_detect(self.inpB, GPIO.BOTH, callback=self.__input_callback)  # add edge detection on channel
+        GPIO.add_event_detect(self.input_a, GPIO.BOTH, callback=self.__input_callback)  # add edge detection on channel
+        GPIO.add_event_detect(self.input_b, GPIO.BOTH, callback=self.__input_callback)  # add edge detection on channel
 
     def __del__(self):
         """
         Stop and clean up.
         """
-        GPIO.remove_event_detect(self.inpA)
-        GPIO.remove_event_detect(self.inpB)
+        GPIO.remove_event_detect(self.input_a)
+        GPIO.remove_event_detect(self.input_b)
 
     def __input_callback(self, channel):
         """
@@ -55,9 +55,9 @@ class Encoder:
         self.lastToggle = t
 
         x = 0
-        if self.bits & (1 << self.inpA):
+        if self.bits & (1 << self.input_a):
             x = 3
-        if self.bits & (1 << self.inpB):
+        if self.bits & (1 << self.input_b):
             x ^= 1
         diff = self.last - x  # difference last - new
         if diff & 1:  # bit 0 = value (1)
@@ -70,14 +70,14 @@ class Encoder:
             if val:
                 self.pos += val
 
-    def getPosition(self):
+    def get_position(self):
         """
         :return: Current position in [mm]
         """
         # 1024 tics/rotation, 4 edge-detects pro tic, pi * 58 mm/rotation
         return int(self.pos / 1024.0 / 4.0 * 3.142 * 58.0)
 
-    def resetPosition(self):
+    def reset_position(self):
         """
         Reset position to zero.
         """

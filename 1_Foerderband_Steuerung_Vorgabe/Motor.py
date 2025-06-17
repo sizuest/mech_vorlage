@@ -4,64 +4,62 @@
 from gpiozero import LED
 from spidev import SpiDev
 
-# TODO Refactor, so dass nicht von 'motorspeed' sondern von 'motorvoltage' gesprochen wird
-
 class Motor:
     """
     Conveyor belt motor controller.
     """
-    def __init__(self, directionPinNbr, brakePinNbr, stopPinNbr):
+    def __init__(self, direction_pin_nbr, brake_pin_nbr, stop_pin_nbr):
         """
         Initialize motor.
-        :param directionPinNbr:
-        :param brakePinNbr:
-        :param stopPinNbr:
+        :param direction_pin_nbr:
+        :param brake_pin_nbr:
+        :param stop_pin_nbr:
         """
-        self.directionPin = LED(directionPinNbr)
-        self.brakePin = LED(brakePinNbr)
-        self.stopPin = LED(stopPinNbr)
+        self.direction_pin = LED(direction_pin_nbr)
+        self.brake_pin = LED(brake_pin_nbr)
+        self.stop_pin = LED(stop_pin_nbr)
 
         self.spi = SpiDev()
         self.spi.open(0, 0)  # SPI0, CE0s
         self.spi.max_speed_hz = 4000000
         self.speed = 0.0
 
-    def __analogOutput(self, value):
-        # lowbyte has 6 data bits
+    def __analog_output(self, value):
+        # low byte has 6 data bits
         # B7, B6, B5, B4, B3, B2, B1, B0
         # D5, D4, D3, D2, D1, D0,  X,  X
-        lowByte = value << 2 & 0b11111100
-        # highbyte has control and 4 data bits
+        low_byte = value << 2 & 0b11111100
+        # high byte has control and 4 data bits
         # control bits are:
         # B7, B6,   B5, B4,     B3,  B2,  B1,  B0
         # W  ,BUF, !GA, !SHDN,  D9,  D8,  D7,  D6
         # B7=0:write to DAC, B6=0:unbuffered, B5=1:Gain=1X, B4=1:Output is active
-        highByte = ((value >> 6) & 0xff) | 0b0 << 7 | 0b0 << 6 | 0b1 << 5 | 0b1 << 4
+        high_byte = ((value >> 6) & 0xff) | 0b0 << 7 | 0b0 << 6 | 0b1 << 5 | 0b1 << 4
         # by using spi.xfer2(), the CS is released after each block, transferring the
         # value to the output pin.
-        self.spi.xfer2([highByte, lowByte])
+        self.spi.xfer2([high_byte, low_byte])
 
-    def setSpeed(self, value):
+    def set_voltage(self, value):
         """
-        Set the motor speed in the range of -1023 to 1023. Higher values will be ignored.
-        :param value: Speed
+        Set the motor voltage in the range of -1023 to 1023. Higher values will be ignored.
+        :param value: Voltage
         """
         if value >= 0:
-            self.directionPin.on()
+            self.direction_pin.on()
         else:
-            self.directionPin.off()
+            self.direction_pin.off()
             value = abs(value)
         if value > 1023:
             value = 1023
         self.speed = value
-        self.__analogOutput(value)
+        self.__analog_output(value)
 
-    def getSpeed(self):
+    def get_voltage(self):
         """
-        Return actual speed.
+        Return actual voltage.
         """
         value = self.speed
-        if self.directionPin.value == 0:
+        if self.direction_pin.value == 0:
             value *= -1
         return value
 
@@ -70,15 +68,15 @@ class Motor:
         Release brake and stop signal.
         """
         self.speed = 0
-        self.__analogOutput(0)
-        self.stopPin.on()
-        self.brakePin.on()
+        self.__analog_output(0)
+        self.stop_pin.on()
+        self.brake_pin.on()
 
     def stop(self):
         """
         Immediately stop the motor using the stop and brake signal.
         """
-        self.__analogOutput(0)
-        self.stopPin.off()
-        self.brakePin.off()
+        self.__analog_output(0)
+        self.stop_pin.off()
+        self.brake_pin.off()
         self.speed = 0

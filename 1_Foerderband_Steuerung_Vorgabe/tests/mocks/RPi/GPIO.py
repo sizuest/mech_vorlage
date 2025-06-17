@@ -43,28 +43,28 @@ ticker_counter = 0
 
 
 def next_edge_on_encoder(encoder, direction="forward"):
-    if encoder.inpA in input_values and encoder.inpB in input_values:
+    if encoder.input_a in input_values and encoder.input_b in input_values:
         global ticker_counter
         if direction == "forward":
             ticker_counter = (ticker_counter + 1) % 4
         else:
             ticker_counter = (ticker_counter + 3) % 4
         if ticker_counter == 0:
-            input_values[encoder.inpA] = 0
-            input_values[encoder.inpB] = 0
-            stored_callback(encoder.inpA)
+            input_values[encoder.input_a] = 0
+            input_values[encoder.input_b] = 0
+            stored_callback(encoder.input_a)
         elif ticker_counter == 1:
-            input_values[encoder.inpA] = 0
-            input_values[encoder.inpB] = 1
-            stored_callback(encoder.inpB)
+            input_values[encoder.input_a] = 0
+            input_values[encoder.input_b] = 1
+            stored_callback(encoder.input_b)
         elif ticker_counter == 2:
-            input_values[encoder.inpA] = 1
-            input_values[encoder.inpB] = 1
-            stored_callback(encoder.inpA)
+            input_values[encoder.input_a] = 1
+            input_values[encoder.input_b] = 1
+            stored_callback(encoder.input_a)
         elif ticker_counter == 3:
-            input_values[encoder.inpA] = 1
-            input_values[encoder.inpB] = 0
-            stored_callback(encoder.inpB)
+            input_values[encoder.input_a] = 1
+            input_values[encoder.input_b] = 0
+            stored_callback(encoder.input_b)
     else:
-        input_values[encoder.inpA] = 0
-        input_values[encoder.inpB] = 0
+        input_values[encoder.input_a] = 0
+        input_values[encoder.input_b] = 0

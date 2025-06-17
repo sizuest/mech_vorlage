@@ -16,11 +16,11 @@ class EncoderTest(unittest.TestCase):
         # of the wheel
         for i in range(4*1024):
             GPIO.next_edge_on_encoder(self.uut)
-        self.assertEqual(self.uut.getPosition(), 182)
+        self.assertEqual(self.uut.get_position(), 182)
 
     def test_same_distance_forward_and_backward(self):
         for i in range(512):
             GPIO.next_edge_on_encoder(self.uut, "forward")
         for i in range(512):
             GPIO.next_edge_on_encoder(self.uut, "backward")
-        self.assertEqual(self.uut.getPosition(), 0)
+        self.assertEqual(self.uut.get_position(), 0)
