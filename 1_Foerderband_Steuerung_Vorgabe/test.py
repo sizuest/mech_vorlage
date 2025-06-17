@@ -14,9 +14,9 @@ from tests.PIDControllerTest import PIDControllerTest
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(EncoderTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(EncoderTest))
     #suite.addTest(unittest.makeSuite(LoggerTest))
-    suite.addTest(unittest.makeSuite(PIDControllerTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(PIDControllerTest))
     return suite
 
 
