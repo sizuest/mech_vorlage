@@ -132,7 +132,6 @@ if __name__ == '__main__':
                 elif line == "q":
                     print("Tastatur: Stop/Beenden gedrückt (q)")
                     stop_pressed()  # Motor/Regelung stoppen
-                    break  # main loop verlassen
 
             elapsed = time() - now
             sleep(max(0.0, waiting_time - elapsed))

@@ -157,17 +157,6 @@ class Logger:
                 filename_png = title + ".png"
                 fig.savefig(filename_png)
 
-                filename_txt = "position_" + title + '.txt'
-
-                with open(filename_txt, 'w') as f:
-                    for item in positions:
-                        f.write("%s\n" % item)
-
-                filename_txt = "feedback_" + title + '.txt'
-                with open(filename_txt, 'w') as f:
-                    for item in speeds:
-                        f.write("%s\n" % item)
-
         except:
             print("Unexpected error:", sys.exc_info()[0])
             pass
