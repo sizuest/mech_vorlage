@@ -63,6 +63,17 @@ class Logger:
         t.start()
 
     @staticmethod
+    def saveToText(positions, voltage, title):
+
+        with open("position_" + title + '.txt', 'w') as f:
+            for item in positions:
+                f.write("%s\n" % item)
+
+        with open("feedback_" + title + '.txt', 'w') as f:
+            for item in voltage:
+                f.write("%s\n" % item)
+
+    @staticmethod
     def displayPlot(positions, speeds, title, PIDactionsCopy, feedback, refpos, save):
         """
         Thread function to display values with the help of matplotlib.
@@ -137,16 +148,16 @@ class Logger:
                 plt.legend()
             figtitle = (str(title))
             plt.figtext(0.5, 0.01, ("overshoot=" + str(overshoot) + " [mm]" +
-                "   risetime=" + str(risetime) + " [s]" +
-                "   settletime=" + str(settletime) + " [s]"),
-                ha="center",
-                fontsize=12,
-                bbox={"facecolor": "salmon", "alpha": 0.3, "pad": 5})
+                                    "   risetime=" + str(risetime) + " [s]" +
+                                    "   settletime=" + str(settletime) + " [s]"),
+                        ha="center",
+                        fontsize=12,
+                        bbox={"facecolor": "salmon", "alpha": 0.3, "pad": 5})
             fig.suptitle(figtitle,
-                va='top',
-                ha="center",
-                fontsize=12,
-                bbox={"facecolor": "aquamarine", "alpha": 0.3, "pad": 5})
+                         va='top',
+                         ha="center",
+                         fontsize=12,
+                         bbox={"facecolor": "aquamarine", "alpha": 0.3, "pad": 5})
             plt.subplots_adjust(top=0.5)
             fig.tight_layout(pad=3)  # otherwise the right y-label is slightly clipped
             plt.show()
@@ -156,17 +167,6 @@ class Logger:
                 title = title.replace(" ", "")
                 filename_png = title + ".png"
                 fig.savefig(filename_png)
-
-                filename_txt = "position_" + title + '.txt'
-
-                with open(filename_txt, 'w') as f:
-                    for item in positions:
-                        f.write("%s\n" % item)
-
-                filename_txt = "feedback_" + title + '.txt'
-                with open(filename_txt, 'w') as f:
-                    for item in speeds:
-                        f.write("%s\n" % item)
 
         except:
             print("Unexpected error:", sys.exc_info()[0])
