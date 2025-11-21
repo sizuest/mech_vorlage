@@ -120,7 +120,7 @@ if __name__ == '__main__':
             now = time()
             pos = encoder.get_position()
             v = motor.get_voltage()
-            print("Position [mm]:", pos, "Voltage [%]: ", v * 100)
+            print("Position [mm]:", pos, "Voltage [%]: ", v * 100 / 1023)
 
             if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
                 line = sys.stdin.readline().strip()
