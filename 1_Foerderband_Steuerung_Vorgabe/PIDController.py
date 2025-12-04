@@ -15,9 +15,9 @@ class PIDController:
         self.anti_windup = 1023  # Anti-windup for Integrator, 1023 equals 5V = max speed
 
         # PID constants:
-        self.kp = 0.5
-        self.Tn = 10
-        self.Tv = 0.001
+        self.kp = 180 * 1023 / 36
+        self.Tn = 20
+        self.Tv = 0.0
 
     def reset(self):
         """
@@ -31,23 +31,20 @@ class PIDController:
         """
         Calculate next target values with the help of a PID controller.
         """
-        # TODO:
-        #  1. Speichern Sie den vorherigen Fehler in der Variablen
-        #     'error_linear_old', berechnen Sie den neuen Fehler und
-        #     speichern Sie diesen in self.error_linear
-        #  2. Berechnen Sie
-        #     - den aktuellen Positions-Fehler 'self.error_linear'
-        #     - das aktuelle Fehler-Integral 'self.error_integral'; denken
-        #       Sie dabei an windup
-        #     - das aktuelle Fehler-Derivative 'error_derivative'
-        #  3. Berechnen Sie aus den Fehlern die P, I und D-Anteile;
-        #     Sie können diese Werte in den Variablen p_part, i_part
-        #     und d_part abspeichern oder die Berechnungen direkt in die
-        #     Liste der pid_actions schreiben
+        error_linear_old = self.error_linear
+        self.error_linear = self.reference_value - actual_value
 
-        p_part = 0  # TODO: Berechnen Sie den P-Anteil
-        i_part = 0  # TODO: Berechnen Sie den I-Anteil
-        d_part = 0  # TODO: Berechnen Sie den D-Anteil
+        self.error_integral += self.error_linear * 0.01
+        if self.error_integral * self.kp / self.Tn > self.anti_windup:
+            self.error_integral = self.anti_windup / self.kp * self.Tn
+        elif self.error_integral * self.kp / self.Tn < -self.anti_windup:
+            self.error_integral = -self.anti_windup / self.kp * self.Tn
+        
+        error_derivative = (self.error_linear-error_linear_old) / 0.01
+
+        p_part = self.kp * self.error_linear
+        i_part = self.kp / self.Tn * self.error_integral
+        d_part = self.kp * self.Tv * error_derivative
 
         # Save the three parts of the controller in a vector
         pid_actions = [p_part, i_part, d_part]
