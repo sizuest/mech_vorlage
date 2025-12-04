@@ -15,7 +15,7 @@ class PIDController:
         self.anti_windup = 1023  # Anti-windup for Integrator, 1023 equals 5V = max speed
 
         # PID constants:
-        self.kp = 180 * 1023 / 36
+        self.kp = 180 / 1023 * 36
         self.Tn = 20
         self.Tv = 0.0
 
