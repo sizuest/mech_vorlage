@@ -53,6 +53,6 @@ class PIDController:
         # Save the three parts of the controller in a vector
         pid_actions = [p_part, i_part, d_part]
         # The output speed is the sum of the parts, 1023 equals 5V = max output
-        controller_output = sum(pid_actions)
+        controller_output = max(min(sum(pid_actions), self.anti_windup), -self.anti_windup)
 
         return int(controller_output), pid_actions

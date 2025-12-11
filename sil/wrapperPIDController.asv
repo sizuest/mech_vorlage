@@ -24,9 +24,7 @@ function [u, P, I, D] = wrapperPIDController(w, y, doParameterSync, reset)
         pid_obj = mod.PIDController();   
         pid_obj.reset();
 
-        pid_obj.kp = 0;
-        pid_obj.Tn = 1;
-        pid_obj.Tv = 1;
+        pid_obj.kp
 
         if doParameterSync
 
@@ -38,6 +36,7 @@ function [u, P, I, D] = wrapperPIDController(w, y, doParameterSync, reset)
             pid_obj.Tn = Tn;
             pid_obj.Tv = Tv;
 
+            disp pid_obj
         end
     end
     
@@ -47,6 +46,6 @@ function [u, P, I, D] = wrapperPIDController(w, y, doParameterSync, reset)
     I = double(targetValue{2}{2})*5.0/1023.0;
     D = double(targetValue{2}{3})*5.0/1023.0;
 
-    u =  double(targetValue{1})/1023.0*5.0;
+    u =  double(targetValue{1})/1023*5.0;
 end
     

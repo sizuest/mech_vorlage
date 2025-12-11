@@ -20,23 +20,23 @@ pyInfo = pyenv;
 try
     v = str2double(pyInfo.Version);
     if v>3.5 || (v<3.2&&v>=3.1)
-        test_passed = printTestItemResult(test_passed, 'OK', pyInfo.Version);
+        printTestItemResult('OK', pyInfo.Version)
     elseif v>=3
-        test_passed = printTestItemResult(test_passed, 'WARNUNG', 'Python-Version nicht aktuell');
+        printTestItemResult('WARNUNG', 'Python-Version nicht aktuell')
     else
-        test_passed = printTestItemResult(test_passed, 'FEHLER', 'Python-Version zu alt. <a href="https://www.python.org/downloads/release/python-3120/">Download Python 3.12</a>');
+        printTestItemResult('FEHLER', 'Python-Version zu alt. <a href="https://www.python.org/downloads/release/python-3120/">Download Python 3.12</a>')
     end
 catch
-    test_passed = printTestItemResult(test_passed, 'FEHLER', '<a href="https://www.python.org/downloads/release/python-3120/">Download Python 3.12</a>');
+    printTestItemResult('FEHLER', '<a href="https://www.python.org/downloads/release/python-3120/">Download Python 3.12</a>')
 end
 
 %% Erzeuge Objekt
 printTestItem('Erzeuge Python-Objekt   ')
 try
     test_obj = py.importlib.reload(py.importlib.import_module('Test')).Test();
-    test_passed = printTestItemResult(test_passed, 'OK');
+    printTestItemResult('OK')
 catch e
-    test_passed = printTestItemResult(test_passed, 'FEHLER');
+    printTestItemResult('FEHLER')
     errors{end+1} = e;
 end
 
@@ -46,12 +46,12 @@ printTestItem('Python-Objekt - update')
 try
     value = test_obj.addValue(12.3);
     if value == 12.3
-        test_passed = printTestItemResult(test_passed, 'OK');
+        printTestItemResult('OK')
     else
-        test_passed = printTestItemResult(test_passed, 'FEHLER', ['falsches Resultat: ' num2str(value)]);
+        printTestItemResult('FEHLER', ['falsches Resultat: ' num2str(value)])
     end
 catch e
-    test_passed = printTestItemResult(test_passed, 'FEHLER');
+    printTestItemResult('FEHLER')
     errors{end+1} = e;
 end
 %% reset
@@ -60,12 +60,12 @@ try
     test_obj.reset();
     value = test_obj.state;
     if value == 0
-        test_passed = printTestItemResult(test_passed, 'OK');
+        printTestItemResult('OK')
     else
-        test_passed = rintTestItemResult(test_passed, 'FEHLER', ['falsches Resultat: ' num2str(value)]);
+        printTestItemResult('FEHLER', ['falsches Resultat: ' num2str(value)])
     end
 catch e
-    test_passed = printTestItemResult(test_passed, 'FEHLER');
+    printTestItemResult('FEHLER')
     errors{end+1} = e;
 end
 %% parameter
@@ -78,19 +78,19 @@ try
         if param == 1
             test_passed = printTestItemResult(test_passed, 'OK');
         else
-            test_passed = printTestItemResult(test_passed, 'FEHLER', ['parameter nicht geschrieben: ' num2str(param)]);
+            test_passed = printTestItemResult('FEHLER', ['parameter nicht geschrieben: ' num2str(param)])
         end
     else
-        test_passed = printTestItemResult(test_passed, 'FEHLER', ['falsches Resultat: ' num2str(value)]);
+        test_passedprintTestItemResult('FEHLER', ['falsches Resultat: ' num2str(value)])
     end
 catch e
-    test_passed = printTestItemResult(test_passed, 'FEHLER');
+    printTestItemResult('FEHLER')
     errors{end+1} = e;
 end
 
 
 
-printTestResult(test_passed);
+printTestResult()
 
 %% PID-Klasse
 %% update
@@ -114,9 +114,9 @@ end
 printTestItem('PID-Wrapper - presistency')
 clear wrapperPIDController
 try
-    [u, P, I1, D] = wrapperPIDController(0.001, 0, false);
-    [u, P, I2, D] = wrapperPIDController(0.001, 0, false);
-    if I1<I2
+    [u1, P, I, D] = wrapperPIDController(0.001, 0, false);
+    [u2, P, I, D] = wrapperPIDController(0.001, 0, false);
+    if u1<u2
          test_passed = printTestItemResult(test_passed, 'OK');
     else
         test_passed = printTestItemResult(test_passed, 'FEHLER');
@@ -126,7 +126,7 @@ catch e
     errors{end+1} = e;
 end
 
-printTestResult(test_passed);
+printTestResult()
 
 for e=errors
     rethrow(e{1});
@@ -151,7 +151,7 @@ function [] = printTestItem(text)
 end
 
 function [test_passed] = printTestItemResult(test_passed, result, info)
-    if nargin<3
+    if nargin<2
         info = "";
     end
 
