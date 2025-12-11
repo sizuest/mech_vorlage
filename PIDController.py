@@ -34,13 +34,29 @@ class PIDController:
         #  1. Speichern Sie den vorherigen Fehler in der Variablen
         #     'error_linear_old', berechnen Sie den neuen Fehler und
         #     speichern Sie diesen in self.error_linear
-        # TODO: Implementieren
+        # BEGIN_LOESUNG
+        # Save Linear error from last timestep, used for the Derivative (D) error
+        error_linear_old = self.error_linear
+        # END_LOESUNG
         #  2. Berechnen Sie
         #     - den aktuellen Positions-Fehler 'self.error_linear'
         #     - das aktuelle Fehler-Integral 'self.error_integral'; denken
         #       Sie dabei an windup
         #     - das aktuelle Fehler-Derivative 'error_derivative'
-        # TODO: Implementieren
+        # BEGIN_LOESUNG
+        # P action controller: Linear error
+        self.error_linear = round(self.reference_value - actual_value)
+        # I action controller: Integral error over time
+        self.error_integral += (self.error_linear * 0.01)
+        # I action controller: Cap integral error (apply anti-windup)
+        if abs(self.error_integral * self.kp / self.Tn) > self.anti_windup:
+            if self.error_integral > 0:
+                self.error_integral = self.anti_windup / (self.kp / self.Tn)
+            else:
+                self.error_integral = -self.anti_windup / (self.kp / self.Tn)
+        # D action controller: Derivative error, computed directly from last and current Linear error.
+        error_derivative = (self.error_linear - error_linear_old) / 0.01
+        # END_LOESUNG
         #  3. Berechnen Sie aus den Fehlern die P, I und D-Anteile;
         #     Sie können diese Werte in den Variablen p_part, i_part
         #     und d_part abspeichern oder die Berechnungen direkt in die
@@ -48,7 +64,11 @@ class PIDController:
         p_part = 0
         i_part = 0
         d_part = 0
-        # TODO: Implementieren
+        # BEGIN_LOESUNG
+        p_part = self.error_linear * self.kp
+        i_part = self.error_integral * self.kp / self.Tn
+        d_part = error_derivative * self.kp * self.Tv
+        # END_LOESUNG
 
         # Save the three parts of the controller in a vector
         pid_actions = [p_part, i_part, d_part]
