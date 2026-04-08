@@ -1,44 +1,44 @@
-# This is a mock for testing RPi-related classes on non-RPi systems
+DUMMY_HANDLE = 0
 
-# constants that are used by the encoder; the values are irrelevant for testing
-BCM = 1
-BOTH = 1
-IN = 1
-PUD_DOWN = 1
+# Modes:
+SET_PULL_DOWN = 1
+
+# Alert edges:
+BOTH_EDGES = 1
 
 # This variable hold the last callback provided with add_event_detect
 stored_callback = None
-
 # This variable holds the input values for the channels:
 input_values = {
 }
 
-def setwarnings(warnings_on):
+
+class CallbackWrapper:
+    """A simple wrapper that is used to return from the callback() function so
+    that it is possible to call cancel() on."""
+    def cancel(self):
+        pass
+
+
+def gpiochip_open(_chip):
+    return DUMMY_HANDLE
+
+
+def gpio_claim_input(_chip_handle, _gpio, _mode):
     pass
 
 
-def setmode(mode):
+def gpio_claim_alert(_chip_handle, _gpio, _edges):
     pass
 
 
-def setup(pin, direction, **kwargs):
-    pass
+def callback(_chip_handle, _gpio, _edges, callback):
+    global stored_callback
+    stored_callback = callback
+    return CallbackWrapper()
 
 
-def add_event_detect(pin, edges, **kwargs):
-    if "callback" in kwargs:
-        global stored_callback
-        stored_callback = kwargs["callback"]
-
-
-def remove_event_detect(pin):
-    pass
-
-
-def input(channel):
-    return input_values[channel]
-
-
+# Testing interface
 ticker_counter = 0
 
 
@@ -52,19 +52,19 @@ def next_edge_on_encoder(encoder, direction="forward"):
         if ticker_counter == 0:
             input_values[encoder.input_a] = 0
             input_values[encoder.input_b] = 0
-            stored_callback(encoder.input_a)
+            stored_callback(DUMMY_HANDLE, encoder.input_a, input_values[encoder.input_a], ticker_counter)
         elif ticker_counter == 1:
             input_values[encoder.input_a] = 0
             input_values[encoder.input_b] = 1
-            stored_callback(encoder.input_b)
+            stored_callback(DUMMY_HANDLE, encoder.input_b, input_values[encoder.input_b], ticker_counter)
         elif ticker_counter == 2:
             input_values[encoder.input_a] = 1
             input_values[encoder.input_b] = 1
-            stored_callback(encoder.input_a)
+            stored_callback(DUMMY_HANDLE, encoder.input_a, input_values[encoder.input_a], ticker_counter)
         elif ticker_counter == 3:
             input_values[encoder.input_a] = 1
             input_values[encoder.input_b] = 0
-            stored_callback(encoder.input_b)
+            stored_callback(DUMMY_HANDLE, encoder.input_b, input_values[encoder.input_b], ticker_counter)
     else:
         input_values[encoder.input_a] = 0
         input_values[encoder.input_b] = 0

@@ -1,7 +1,7 @@
 # Copyright 2022 Hochschule Luzern - Informatik
 # Author: Silvan Wegmann <silvan.wegmann@hslu.ch>
 import unittest
-import RPi.GPIO as GPIO
+import lgpio
 from Encoder import Encoder
 
 
@@ -15,12 +15,12 @@ class EncoderTest(unittest.TestCase):
         # of position change which equals one circumference
         # of the wheel
         for i in range(4*1024):
-            GPIO.next_edge_on_encoder(self.uut)
+            lgpio.next_edge_on_encoder(self.uut)
         self.assertEqual(self.uut.get_position(), 182)
 
     def test_same_distance_forward_and_backward(self):
         for i in range(512):
-            GPIO.next_edge_on_encoder(self.uut, "forward")
+            lgpio.next_edge_on_encoder(self.uut, "forward")
         for i in range(512):
-            GPIO.next_edge_on_encoder(self.uut, "backward")
+            lgpio.next_edge_on_encoder(self.uut, "backward")
         self.assertEqual(self.uut.get_position(), 0)

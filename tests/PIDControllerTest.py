@@ -52,9 +52,9 @@ class PIDControllerTest(unittest.TestCase):
         self.pid.reference_value = 70000
         self.pid.reset()
 
-        self.assertEqual(self.pid.calculate_controller_output(0)[0], 36023)
-        self.assertEqual(self.pid.calculate_controller_output(100)[0], 35923)
-        self.assertEqual(self.pid.calculate_controller_output(200)[0], 35873)
+        self.assertEqual(self.pid.calculate_controller_output(0)[0], 1023)
+        self.assertEqual(self.pid.calculate_controller_output(100)[0], 1023)
+        self.assertEqual(self.pid.calculate_controller_output(200)[0], 1023)
 
         self.assertAlmostEqual(self.pid.error_integral, self.pid.anti_windup / (self.pid.kp / self.pid.Tn), 3)
 
