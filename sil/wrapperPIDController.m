@@ -24,7 +24,7 @@ function [u, P, I, D] = wrapperPIDController(w, y, doParameterSync, reset)
         pid_obj = mod.PIDController();   
         pid_obj.reset();
 
-        pid_obj.kp = 0;
+        pid_obj.kp = 1;
         pid_obj.Tn = 1;
         pid_obj.Tv = 1;
 
