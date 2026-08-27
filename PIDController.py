@@ -15,9 +15,16 @@ class PIDController:
         self.anti_windup = 1023  # Anti-windup for Integrator, 1023 equals 5V = max speed
 
         # PID constants:
-        self.kp = 180 / 1023.0 * 36
-        self.Tn = 20
+        # 0. Kopieren Sie hier Ihre Werte für kp, Tn und - falls verwendet - Tv aus der bewerteten
+        #    Semesterleistung 2. Beachten Sie dabei folgendes:
+        #    - Messwert (actual_value): Im Modell haben wir in 'm' gerechnet, hier verwenden wir 'mm' (Faktor 1000)
+        #    - Steuergrösse: Im Model ist die Einheit 'V'. Hier in der Implementierung entspricht ein Signal von 1023
+        #      an den Verstärker einer Spannung von 24 V
+        #    Rechnen Sie kp so um, dass diese Skalierungen berücksichtigt werden!
+        self.kp = 1
+        self.Tn = 0
         self.Tv = 0
+        # TODO: Implementieren
 
     def reset(self):
         """
@@ -27,7 +34,6 @@ class PIDController:
         self.error_integral = 0
 
     def calculate_controller_output(self, actual_value):
-
         """
         Calculate next target values with the help of a PID controller.
         """
